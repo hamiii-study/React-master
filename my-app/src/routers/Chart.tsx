@@ -2,8 +2,10 @@ import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { fetchCoinHistroy } from "../api";
 import ApexChart from "react-apexcharts";
+import React from "react";
 
 interface ChartProps {
+  isDark: boolean;
   coinId: string;
 }
 interface IHistorical {
@@ -17,7 +19,7 @@ interface IHistorical {
   market_cap: number;
 }
 
-function Chart({ coinId }: ChartProps) {
+function Chart({ coinId, isDark }: ChartProps) {
   const { isLoading, data } = useQuery<IHistorical[]>(
     ["ohlvc", coinId],
     () => fetchCoinHistroy(coinId),
@@ -46,7 +48,7 @@ function Chart({ coinId }: ChartProps) {
           ]}
           options={{
             theme: {
-              mode: "dark",
+              mode: isDark ? "dark" : "light",
             },
             chart: {
               height: 300,

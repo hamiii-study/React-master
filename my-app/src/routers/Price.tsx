@@ -2,6 +2,7 @@ import { useQuery } from "react-query";
 import { fetchCoinHistroy } from "../api";
 import styled from "styled-components";
 import ApexChart from "react-apexcharts";
+import React from "react";
 
 const Container = styled.div`
   /* background-color: #92cbfc; */
