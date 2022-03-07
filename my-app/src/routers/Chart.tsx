@@ -3,9 +3,10 @@ import { useParams } from "react-router-dom";
 import { fetchCoinHistroy } from "../api";
 import ApexChart from "react-apexcharts";
 import React from "react";
+import { isDarkAtom } from "../atoms";
+import { useRecoilValue } from "recoil";
 
 interface ChartProps {
-  isDark: boolean;
   coinId: string;
 }
 interface IHistorical {
@@ -19,7 +20,9 @@ interface IHistorical {
   market_cap: number;
 }
 
-function Chart({ coinId, isDark }: ChartProps) {
+function Chart({ coinId }: ChartProps) {
+  const isDark = useRecoilValue(isDarkAtom); //atom의 값을 가져옴
+
   const { isLoading, data } = useQuery<IHistorical[]>(
     ["ohlvc", coinId],
     () => fetchCoinHistroy(coinId),
