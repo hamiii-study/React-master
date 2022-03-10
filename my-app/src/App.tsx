@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import { useRef } from "react";
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -35,7 +36,7 @@ const Circle = styled(motion.div)`
 
 const boxVariants = {
   hover: {
-    scale: 1.5,
+    scale: 1.2,
     rotateZ: 90,
   },
   tap: {
@@ -44,11 +45,36 @@ const boxVariants = {
   },
 };
 
+const BiggerBox = styled.div`
+  width: 600px;
+  height: 600px;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+`;
+
 function App() {
+  const biggerBoxRef = useRef<HTMLDivElement>(null);
   return (
     <Wrapper>
-      <Box variants={boxVariants} whileHover="hover" whileTap="tap" />
+      <BiggerBox ref={biggerBoxRef}>
+        <Box
+          drag
+          dragSnapToOrigin
+          // dragElastic={}
+          dragConstraints={biggerBoxRef}
+          variants={boxVariants}
+          whileHover="hover"
+          whileTap="tap"
+        />
+      </BiggerBox>
     </Wrapper>
   );
 }
 export default App;
+
+// drag="x" -> x축으로만 움직일 수 있음!
+//  overflow: hidden; ->밖으로 나가면 안보임
