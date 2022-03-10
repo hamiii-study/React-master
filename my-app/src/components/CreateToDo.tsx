@@ -1,21 +1,27 @@
 import { useForm } from "react-hook-form";
-import { useSetRecoilState } from "recoil";
-import { toDoState } from "../atoms";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { categoryState, toDoState } from "../atoms";
 
-interface IForm {
+export interface IForm {
   toDo: string;
 }
 
 function CreateToDo() {
   const setToDos = useSetRecoilState(toDoState);
+  const category = useRecoilValue(categoryState);
   const { register, handleSubmit, setValue } = useForm<IForm>();
   const onValid = ({ toDo }: IForm) => {
+    console.log(toDo);
     // setError("extraError", { message: "Server offline." });
-    setToDos((oldToDos) => [
-      { text: toDo, id: Date.now(), category: "TO_DO" },
-      ...oldToDos,
-    ]);
-    setValue("toDo", "");
+    setToDos((oldToDos) => {
+      const fStorage = oldToDos.filter((toDo) => toDo.category === category);
+      console.log(fStorage);
+      const storage = [{ text: toDo, id: Date.now(), category }, ...fStorage];
+      localStorage.setItem(category, JSON.stringify(storage));
+
+      setValue("toDo", "");
+      return [{ text: toDo, id: Date.now(), category }, ...oldToDos];
+    });
   };
   return (
     <form onSubmit={handleSubmit(onValid)}>
